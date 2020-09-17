@@ -105,6 +105,46 @@ func actionDecorator(f func(*cli.Context) error) func(*cli.Context) error {
 	}
 }
 
+
+//------------------------
+// START - OBD TEST CODE
+var helloOBDCommand = cli.Command{
+	Name:      "helloOBD",
+	Category:  "Wallet",
+	Usage:     "Say Hello to OBD",
+	ArgsUsage: "your_name",
+	Description: "Say Hello to OmniBOLT",
+	Action: actionDecorator(helloOBD),
+}
+
+func helloOBD(ctx *cli.Context) error {
+	// TEST CODE
+	inputParam := ctx.Args().First()
+
+	var outputInfo string
+	switch inputParam { // TODO(roasbeef): make them ints on the cli?
+	case "neo":
+		outputInfo = "I am neo.carmack."
+	case "yann":
+		outputInfo = "I am Yann."
+	case "kevin":
+		outputInfo = "I am Kevin."
+	case "john":
+		outputInfo = "I am John."
+	default:
+		return fmt.Errorf("You are not belong to OBD team.")
+	}
+
+	// printRespJSON(outputInfo)
+	fmt.Println(outputInfo)
+
+	return nil
+}
+
+// END - OBD TEST CODE
+//------------------------
+
+
 var newAddressCommand = cli.Command{
 	Name:      "newaddress",
 	Category:  "Wallet",

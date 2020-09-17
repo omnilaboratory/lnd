@@ -256,6 +256,7 @@ func main() {
 		createCommand,
 		unlockCommand,
 		changePasswordCommand,
+		helloOBDCommand,
 		newAddressCommand,
 		estimateFeeCommand,
 		sendManyCommand,
