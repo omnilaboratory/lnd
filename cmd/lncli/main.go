@@ -256,7 +256,6 @@ func main() {
 		createCommand,
 		unlockCommand,
 		changePasswordCommand,
-		helloOBDCommand,
 		newAddressCommand,
 		estimateFeeCommand,
 		sendManyCommand,
@@ -304,6 +303,16 @@ func main() {
 		bakeMacaroonCommand,
 		trackPaymentCommand,
 		versionCommand,
+
+		//------------------------
+		// START - OBD CODE
+
+		helloOBDCommand,
+		connectToOBDCommand,
+		obdLoginCommand,
+		
+		// END - OBD CODE
+		//------------------------
 	}
 
 	// Add any extra commands determined by build flags.

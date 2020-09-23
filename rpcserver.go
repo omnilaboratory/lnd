@@ -57,6 +57,7 @@ import (
 	"github.com/lightningnetwork/lnd/lnwire"
 	"github.com/lightningnetwork/lnd/macaroons"
 	"github.com/lightningnetwork/lnd/monitoring"
+	"github.com/lightningnetwork/lnd/obd"
 	"github.com/lightningnetwork/lnd/peer"
 	"github.com/lightningnetwork/lnd/peernotifier"
 	"github.com/lightningnetwork/lnd/record"
@@ -6556,3 +6557,36 @@ func (r *rpcServer) FundingStateStep(ctx context.Context,
 	// current state?
 	return &lnrpc.FundingStateStepResp{}, nil
 }
+
+//------------------------
+// START - OBD CODE
+	
+// ConnectToOBD connect to an OmniBOL Daemon (OBD).
+func (r *rpcServer) ConnectToOBD(ctx context.Context,
+	in *lnrpc.ConnectToOBDRequest) (*lnrpc.ConnectToOBDResponse, error) {
+
+	// Code is here
+	resp, err := obd.ConnectToOBD(in.NodeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	// rpcsLog.Debugf("[newaddress] type=%v addr=%v", in.Type, addr.String())
+	return &lnrpc.ConnectToOBDResponse{Resp: resp}, nil
+}
+	
+// ObdLogin login to an OmniBOL Daemon (OBD).
+func (r *rpcServer) ObdLogin(ctx context.Context,
+	in *lnrpc.ObdLoginRequest) (*lnrpc.ObdLoginResponse, error) {
+
+	// Code is here
+	resp, err := obd.ObdLogin(in.MnemonicWords)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lnrpc.ObdLoginResponse{Resp: resp}, nil
+}
+	
+// END - OBD CODE
+//------------------------

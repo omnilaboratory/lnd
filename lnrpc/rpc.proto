@@ -491,7 +491,47 @@ service Lightning {
     offline.
     */
     rpc BakeMacaroon (BakeMacaroonRequest) returns (BakeMacaroonResponse);
+
+    //------------------------
+    // START - OBD CODE
+
+    /* lncli: `connectToOBD`
+    ConnectToOBD connect to an OmniBOL Daemon (OBD).
+    */
+    rpc ConnectToOBD (ConnectToOBDRequest) returns (ConnectToOBDResponse);
+
+    /* lncli: `obdlogin`
+    ObdLogin login to OBD.
+    */
+    rpc ObdLogin (ObdLoginRequest) returns (ObdLoginResponse);
+		
+    // END - OBD CODE
+    //------------------------
 }
+
+//------------------------
+// START - OBD CODE
+
+message ConnectToOBDRequest {
+    // The OBD node address
+    string node_address = 1;
+}
+message ConnectToOBDResponse {
+    // The response for connection succeeded or failed.
+    string resp = 1;
+}
+
+message ObdLoginRequest {
+    // The mnemonic words
+    string mnemonic_words = 1;
+}
+message ObdLoginResponse {
+    // The response for login succeeded or failed.
+    string resp = 1;
+}
+    
+// END - OBD CODE
+//------------------------
 
 message Utxo {
     // The type of address

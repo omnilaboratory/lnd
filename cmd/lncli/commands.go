@@ -105,46 +105,6 @@ func actionDecorator(f func(*cli.Context) error) func(*cli.Context) error {
 	}
 }
 
-
-//------------------------
-// START - OBD TEST CODE
-var helloOBDCommand = cli.Command{
-	Name:      "helloOBD",
-	Category:  "Wallet",
-	Usage:     "Say Hello to OBD",
-	ArgsUsage: "your_name",
-	Description: "Say Hello to OmniBOLT",
-	Action: actionDecorator(helloOBD),
-}
-
-func helloOBD(ctx *cli.Context) error {
-	// TEST CODE
-	inputParam := ctx.Args().First()
-
-	var outputInfo string
-	switch inputParam { // TODO(roasbeef): make them ints on the cli?
-	case "neo":
-		outputInfo = "I am neo.carmack."
-	case "yann":
-		outputInfo = "I am Yann."
-	case "kevin":
-		outputInfo = "I am Kevin."
-	case "john":
-		outputInfo = "I am John."
-	default:
-		return fmt.Errorf("You are not belong to OBD team.")
-	}
-
-	// printRespJSON(outputInfo)
-	fmt.Println(outputInfo)
-
-	return nil
-}
-
-// END - OBD TEST CODE
-//------------------------
-
-
 var newAddressCommand = cli.Command{
 	Name:      "newaddress",
 	Category:  "Wallet",
@@ -3252,3 +3212,117 @@ func restoreChanBackup(ctx *cli.Context) error {
 
 	return nil
 }
+
+//------------------------
+// START - OBD CODE
+
+var helloOBDCommand = cli.Command{
+	Name:      "helloOBD",
+	Category:  "Wallet",
+	Usage:     "Say Hello to OBD",
+	ArgsUsage: "your_name",
+	Description: "Say Hello to OmniBOLT",
+	Action: actionDecorator(helloOBD),
+}
+
+func helloOBD(ctx *cli.Context) error {
+	// TEST CODE
+	inputParam := ctx.Args().First()
+
+	var outputInfo string
+	switch inputParam {
+	case "neo":
+		outputInfo = "I am neo.carmack."
+	case "yann":
+		outputInfo = "I am Yann."
+	case "kevin":
+		outputInfo = "I am Kevin."
+	case "john":
+		outputInfo = "I am John."
+	case "test":
+		outputInfo = "I am test."
+	default:
+		return fmt.Errorf("You are not belong to OBD team.")
+	}
+
+	// printRespJSON(outputInfo)
+	fmt.Println(outputInfo)
+
+	return nil
+}
+
+var connectToOBDCommand = cli.Command{
+	Name:      "connectToOBD",
+	Category:  "Wallet",
+	Usage:     "Connect to an OmniBOL Daemon (OBD)",
+	ArgsUsage: "obd_node_address like `ws://62.234.188.160:60020/wstest`",
+	Description: "Connect to an OmniBOL Daemon (OBD)",
+	Action: actionDecorator(connectToOBD),
+}
+
+func connectToOBD(ctx *cli.Context) error {
+
+	client, cleanUp := getClient(ctx)
+	defer cleanUp()
+
+	// inputParam := strings.Trim(ctx.Args().First(), "")
+	inputParam := ctx.Args().First()
+
+	var outputInfo string
+	switch inputParam {
+	case "":
+		outputInfo = "Please input an OBD node address like this `ws://62.234.188.160:60020/wstest`"
+		return fmt.Errorf(outputInfo)
+	}
+
+	ctxb := context.Background()
+	resp, err := client.ConnectToOBD(ctxb, &lnrpc.ConnectToOBDRequest{
+		NodeAddress: inputParam,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+	return nil
+}
+
+var obdLoginCommand = cli.Command{
+	Name:      "obdlogin",
+	Category:  "Wallet",
+	Usage:     "Login to an OmniBOL Daemon (OBD)",
+	ArgsUsage: "mnemonic_words",
+	Description: "Login to an OmniBOL Daemon (OBD)",
+	Action: actionDecorator(obdLogin),
+}
+
+func obdLogin(ctx *cli.Context) error {
+
+	client, cleanUp := getClient(ctx)
+	defer cleanUp()
+
+	inputParam := ctx.Args().First()
+
+	var outputInfo string
+	switch inputParam {
+	case "":
+		outputInfo = "Please input mnemonic words"
+		return fmt.Errorf(outputInfo)
+	}
+
+	ctxb := context.Background()
+	resp, err := client.ObdLogin(ctxb, &lnrpc.ObdLoginRequest{
+		MnemonicWords: inputParam,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+	return nil
+}
+
+// END - OBD CODE
+//------------------------
