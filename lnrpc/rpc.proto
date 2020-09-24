@@ -504,6 +504,16 @@ service Lightning {
     ObdLogin login to OBD.
     */
     rpc ObdLogin (ObdLoginRequest) returns (ObdLoginResponse);
+
+    /* lncli: `obdopenchannel`
+    OpenChannel launch a request to create a channel with someone else(Bob).
+    */
+    rpc ObdOpenChannel (ObdOpenChannelRequest) returns (ObdOpenChannelResponse);
+
+    /* lncli: `obdacceptchannel`
+    AcceptChannel counterparty replies to OpenChannel.
+    */
+    rpc ObdAcceptChannel (ObdAcceptChannelRequest) returns (ObdAcceptChannelResponse);
 		
     // END - OBD CODE
     //------------------------
@@ -527,6 +537,35 @@ message ObdLoginRequest {
 }
 message ObdLoginResponse {
     // The response for login succeeded or failed.
+    string resp = 1;
+}
+
+message OpenChannelInfo {
+    string FundingPubKey      = 1;
+    int32  FunderAddressIndex = 2;
+    bool   IsPrivate          = 3;
+}
+message ObdOpenChannelRequest {
+    string          node_id = 1;
+    string          user_id = 2;
+    OpenChannelInfo info    = 3;
+}
+message ObdOpenChannelResponse {
+    string resp = 1;
+}
+
+message AcceptChannelInfo {
+    string TemporaryChannelId = 1;
+    string FundingPubKey      = 2;
+    int32  FundeeAddressIndex = 3;
+    bool   Approval           = 4;
+}
+message ObdAcceptChannelRequest {
+    string            node_id = 1;
+    string            user_id = 2;
+    AcceptChannelInfo info    = 3;
+}
+message ObdAcceptChannelResponse {
     string resp = 1;
 }
     

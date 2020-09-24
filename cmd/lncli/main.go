@@ -310,6 +310,8 @@ func main() {
 		helloOBDCommand,
 		connectToOBDCommand,
 		obdLoginCommand,
+		obdOpenChannelCommand,
+		obdAcceptChannelCommand,
 		
 		// END - OBD CODE
 		//------------------------

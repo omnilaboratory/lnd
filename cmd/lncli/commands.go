@@ -3324,5 +3324,77 @@ func obdLogin(ctx *cli.Context) error {
 	return nil
 }
 
+var obdOpenChannelCommand = cli.Command{
+	Name:      "obdopenchannel",
+	Category:  "Wallet",
+	Usage:     "launch a request to create a channel with someone else(Bob).",
+	ArgsUsage: "node_id user_id open_channel_info",
+	Description: "launch a request to create a channel with someone else(Bob).",
+	Action: actionDecorator(obdOpenChannel),
+}
+
+func obdOpenChannel(ctx *cli.Context) error {
+
+	client, cleanUp := getClient(ctx)
+	defer cleanUp()
+
+	// inputParam := ctx.Args().First()
+
+	// var outputInfo string
+	// switch inputParam {
+	// case "":
+	// 	outputInfo = "Please input mnemonic words"
+	// 	return fmt.Errorf(outputInfo)
+	// }
+
+	ctxb := context.Background()
+	resp, err := client.ObdOpenChannel(ctxb, &lnrpc.ObdOpenChannelRequest{
+		NodeId: "", UserId: "", Info: nil,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+	return nil
+}
+
+var obdAcceptChannelCommand = cli.Command{
+	Name:      "obdacceptchannel",
+	Category:  "Wallet",
+	Usage:     "counterparty replies to OpenChannel.",
+	ArgsUsage: "node_id user_id open_accept_info",
+	Description: "counterparty replies to OpenChannel.",
+	Action: actionDecorator(obdAcceptChannel),
+}
+
+func obdAcceptChannel(ctx *cli.Context) error {
+
+	client, cleanUp := getClient(ctx)
+	defer cleanUp()
+
+	// inputParam := ctx.Args().First()
+
+	// var outputInfo string
+	// switch inputParam {
+	// case "":
+	// 	outputInfo = "Please input mnemonic words"
+	// 	return fmt.Errorf(outputInfo)
+	// }
+
+	ctxb := context.Background()
+	resp, err := client.ObdAcceptChannel(ctxb, &lnrpc.ObdAcceptChannelRequest{
+		NodeId: "", UserId: "", Info: nil,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+	return nil
+}
+
 // END - OBD CODE
 //------------------------

@@ -58,6 +58,7 @@ import (
 	"github.com/lightningnetwork/lnd/macaroons"
 	"github.com/lightningnetwork/lnd/monitoring"
 	"github.com/lightningnetwork/lnd/obd"
+	"github.com/lightningnetwork/lnd/obd/bean"
 	"github.com/lightningnetwork/lnd/peer"
 	"github.com/lightningnetwork/lnd/peernotifier"
 	"github.com/lightningnetwork/lnd/record"
@@ -6565,13 +6566,12 @@ func (r *rpcServer) FundingStateStep(ctx context.Context,
 func (r *rpcServer) ConnectToOBD(ctx context.Context,
 	in *lnrpc.ConnectToOBDRequest) (*lnrpc.ConnectToOBDResponse, error) {
 
-	// Code is here
+	//
 	resp, err := obd.ConnectToOBD(in.NodeAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	// rpcsLog.Debugf("[newaddress] type=%v addr=%v", in.Type, addr.String())
 	return &lnrpc.ConnectToOBDResponse{Resp: resp}, nil
 }
 	
@@ -6579,13 +6579,41 @@ func (r *rpcServer) ConnectToOBD(ctx context.Context,
 func (r *rpcServer) ObdLogin(ctx context.Context,
 	in *lnrpc.ObdLoginRequest) (*lnrpc.ObdLoginResponse, error) {
 
-	// Code is here
+	//
 	resp, err := obd.ObdLogin(in.MnemonicWords)
 	if err != nil {
 		return nil, err
 	}
 
 	return &lnrpc.ObdLoginResponse{Resp: resp}, nil
+}
+	
+// ObdOpenChannel launch a request to create a channel with someone else(Bob).
+func (r *rpcServer) ObdOpenChannel(ctx context.Context,
+	in *lnrpc.ObdOpenChannelRequest) (*lnrpc.ObdOpenChannelResponse, error) {
+
+	// Temp testing code.
+	var info bean.OpenChannelInfo
+	resp, err := obd.ObdOpenChannel(in.NodeId, in.UserId, info)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lnrpc.ObdOpenChannelResponse{Resp: resp}, nil
+}
+	
+// ObdAcceptChannel counterparty replies to OpenChannel.
+func (r *rpcServer) ObdAcceptChannel(ctx context.Context,
+	in *lnrpc.ObdAcceptChannelRequest) (*lnrpc.ObdAcceptChannelResponse, error) {
+
+	// Temp testing code.
+	var info bean.AcceptChannelInfo
+	resp, err := obd.ObdAcceptChannel(in.NodeId, in.UserId, info)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lnrpc.ObdAcceptChannelResponse{Resp: resp}, nil
 }
 	
 // END - OBD CODE
